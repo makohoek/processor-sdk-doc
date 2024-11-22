@@ -1,0 +1,44 @@
+From 110fbd20bfd39fec96fcfecc87be3c497a2cb5c3 Mon Sep 17 00:00:00 2001
+From: Guillaume La Roque <glaroque@baylibre.com>
+Date: Fri, 27 Sep 2024 09:57:44 +0200
+Subject: [PATCH] audio: update default value for audio capture(in)
+
+Actually in code buffer size check is done to compare period size and count
+for xml with default value(IN_PCM_BUFFER_SIZE_DEFAULT), if xml value
+was higher than default we use default but default value was low.
+
+To support more hardware we need to set a default value to higher
+value to give possibility to set period size and count with xml file and
+each hardware should define in audio_policy_configuration.xml period
+size and period count value accordly to hardware capabilities instead of
+doing limitation in source code.
+
+For example on TI AM62P 256 for period size is too low we need actually 512
+to be able to do capture.
+
+Signed-off-by: Guillaume La Roque <glaroque@baylibre.com>
+---
+ audio/audio_hw.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/audio/audio_hw.c b/audio/audio_hw.c
+index 3aa24b0e8185..60f512da2fe2 100644
+--- a/audio/audio_hw.c
++++ b/audio/audio_hw.c
+@@ -66,10 +66,10 @@
+ #define OUT_CHANNEL_COUNT_DEFAULT 2
+ #define OUT_RATE_DEFAULT 44100
+ 
+-#define IN_PERIOD_SIZE_DEFAULT 256
+-#define IN_PERIOD_COUNT_DEFAULT 4
++#define IN_PERIOD_SIZE_DEFAULT 1024
++#define IN_PERIOD_COUNT_DEFAULT 16
+ #define IN_CHANNEL_MASK_DEFAULT AUDIO_CHANNEL_IN_MONO
+-#define IN_CHANNEL_COUNT_DEFAULT 1
++#define IN_CHANNEL_COUNT_DEFAULT 2
+ #define IN_RATE_DEFAULT 44100
+ 
+ #define IN_PCM_BUFFER_SIZE_DEFAULT \
+-- 
+2.47.0
+
