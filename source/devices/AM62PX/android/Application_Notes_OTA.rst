@@ -16,9 +16,9 @@ There are 2 ways of applying an OTA update:
 OTA via ``adb sideload``
 ************************
 
-1. Build and flash android images following :ref:`android-build-aosp` instructions.
+#. Build and flash android images following :ref:`android-build-aosp` instructions.
 
-2. Build OTA package
+#. Build OTA package
 
 .. code-block:: console
 
@@ -28,9 +28,9 @@ OTA via ``adb sideload``
    $ export DIST_DIR=./dist_output
    $ m dist
 
-3. `Enable adb debugging on your device <https://developer.android.com/studio/command-line/adb#Enabling>`__
+#. `Enable adb debugging on your device <https://developer.android.com/studio/command-line/adb#Enabling>`__
 
-4. Reboot to recovery and apply OTA
+#. Reboot to recovery and apply OTA
 
 .. code-block:: console
 
@@ -46,7 +46,7 @@ OTA via ``adb sideload``
 OTA via Update Engine
 *********************
 
-1. Build the OTA package
+#. Build the OTA package
 
    .. code-block:: console
 
@@ -56,7 +56,7 @@ OTA via Update Engine
       $ m
       $ m dist
 
-2. Set your ``PYTHONPATH``.
+#. Set your ``PYTHONPATH``.
 
    Some dependent python modules for :file:`gen_update_config.py` are part of AOSP tree or
    part of the build output.
@@ -70,7 +70,7 @@ OTA via Update Engine
       $ PYTHONPATH=$ANDROID_BUILD_TOP/system/apex/apexer/:$PYTHONPATH
       $ export PYTHONPATH
 
-3. Patch the :file:`gen_update_config.py` script to be compatible with Android 15.
+#. Patch the :file:`gen_update_config.py` script to be compatible with Android 15.
    In :file:`bootable/recovery`, apply the following change:
 
    https://android-review.googlesource.com/c/platform/bootable/recovery/+/2837717
@@ -83,7 +83,7 @@ OTA via Update Engine
       $ git fetch https://android.googlesource.com/platform/bootable/recovery refs/changes/17/2837717/1
       $ git cherry-pick FETCH_HEAD
 
-4. Update the ota config file. Feel free to change ``$DIST_DIR`` to match your developer environment.
+#. Update the ota config file. Feel free to change ``$DIST_DIR`` to match your developer environment.
 
    .. code-block:: console
 
@@ -97,7 +97,7 @@ OTA via Update Engine
 
       Be careful, last line is **one single** very long line.
 
-5. Run the SystemUpdaterSample app once:
+#. Run the SystemUpdaterSample app once:
 
    .. code-block:: console
 
@@ -105,7 +105,7 @@ OTA via Update Engine
       $ adb shell setenforce 0
       $ adb shell am start com.example.android.systemupdatersample/com.example.android.systemupdatersample.ui.MainActivity
 
-6. Push the files on the board:
+#. Push the files on the board:
 
    .. code-block:: console
 
@@ -115,20 +115,20 @@ OTA via Update Engine
       $ adb push $DIST_DIR/$BOARD-ota-eng.${USER}.json /data/user/0/com.example.android.systemupdatersample/files/configs/
       $ adb push $DIST_DIR/$BOARD-ota-eng.${USER}.zip /data/user/0/com.example.android.systemupdatersample/files/packages/
 
-7. Change SELinux label:
+#. Change SELinux label:
 
    .. code-block:: console
 
       $ adb shell chcon -R u:object_r:ota_package_file:s0 /data/user/0/com.example.android.systemupdatersample/
 
 
-8. Change Unix permisssions:
+#. Change Unix permisssions:
 
    .. code-block:: console
 
       $ adb shell chmod -R 777 /data/user/0/com.example.android.systemupdatersample/
 
-9. Run the update on the UI:
+#. Run the update on the UI:
 
    - Tap on ``RELOAD`` to load the config
    - Tap on ``APPLY`` to apply the OTA
@@ -137,13 +137,13 @@ OTA via Update Engine
    - Tap on ``SWITCH SLOT`` to finish update (scroll downwards to see the button)
    - Wait for verification
 
-10. Reboot the device with:
+#. Reboot the device with:
 
     .. code-block:: console
 
        $ adb shell svc power reboot
 
-11. Confirm that booting on slot b
+#. Confirm that booting on slot b
 
     .. code-block:: console
 
